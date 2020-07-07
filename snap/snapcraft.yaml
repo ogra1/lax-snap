@@ -41,9 +41,6 @@ parts:
       - libnspr4
       - libnss3
       - libxss1
-    build-packages:
-    - nodejs
-    - npm
     override-build: |
       case $SNAPCRAFT_ARCH_TRIPLET in
         "i386-linux-gnu") ARCH="ia32";;
@@ -52,6 +49,8 @@ parts:
         "aarch64-linux-gnu") ARCH="arm64";;
         *) echo "ERROR: electron does not support the '$SNAPCRAFT_ARCH_TRIPLET' architecture" && exit 1;;
       esac
+      PATH=$PATH:$SNAPCRAFT_PART_SRC/../npm/bin
+      npm config set unsafe-perm True
 
       # OSX tool that we do not need or use
       sed -i 's/ditto/#ditto/' bin/build
