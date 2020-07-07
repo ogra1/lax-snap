@@ -37,6 +37,8 @@ parts:
     plugin: nodejs
     nodejs-version: 12.18.2
     nodejs-package-manager: npm
+    build-packages:
+      - unzip
     stage-packages:
       - libnspr4
       - libnss3
