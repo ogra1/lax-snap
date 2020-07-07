@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Lax
+Icon=${SNAP}/meta/gui/icon.png
+Exec=lax
+Terminal=false
+StartupWMClass=lax
+Categories=Utility;

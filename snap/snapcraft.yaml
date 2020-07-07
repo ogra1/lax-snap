@@ -1,0 +1,89 @@
+name: lax
+base: core18
+adopt-info: lax
+summary: electron based IRC client
+description: |
+  This is my-snap's description. You have a paragraph or two to tell the
+  most important story about your snap. Keep it under 100 words though,
+  we live in tweetspace and your description wants to look good in the snap
+  store.
+
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: amd64
+  - build-on: i386
+  - build-on: armhf
+  - build-on: arm64
+
+apps:
+  lax:
+    extensions: [gnome-3-34]
+    command: desktop-launch $SNAP/electron/Lax --disable-gpu --no-sandbox
+    plugs:
+      - audio-playback
+      - browser-support
+      - desktop
+      - gsettings
+      - network
+      - network-bind
+      - opengl
+      - unity7
+      - wayland
+      - x11
+
+parts:
+  lax:
+    source: https://github.com/brandly/Lax.git
+    source-tag: v0.6.5
+    plugin: nodejs
+    nodejs-version: 12.18.2
+    nodejs-package-manager: npm
+    stage-packages:
+      - libnspr4
+      - libnss3
+      - libxss1
+    override-build: |
+      case $SNAPCRAFT_ARCH_TRIPLET in
+        "i386-linux-gnu") ARCH="ia32";;
+        "x86_64-linux-gnu") ARCH="x64";;
+        "arm-linux-gnueabihf") ARCH="armv7l";;
+        "aarch64-linux-gnu") ARCH="arm64";;
+        *) echo "ERROR: electron does not support the '$SNAPCRAFT_ARCH_TRIPLET' architecture" && exit 1;;
+      esac
+
+      # OSX tool that we do not need or use
+      sed -i 's/ditto/#ditto/' bin/build
+      # app.dock does not exist on linux, dock icon is managed by .desktop file
+      sed -i 's/app.dock.setIcon/\/\/app.dock.setIcon/' index.js
+      # copy upstream icon to snaps .desktop file
+      cp src/static/dock-icon.png $SNAPCRAFT_PROJECT_DIR/snap/gui/icon.png
+
+      # install build tools
+      npm install --save-dev @babel/core @babel/cli
+      mkdir -p build/bin
+      cp bin/build build/bin/
+      # build
+      npm run build
+
+      # set version
+      VER="$(grep version package.json |sed 's/^.*: //;s/"//g;s/,//')"
+      snapcraftctl set-version $VER
+
+      # copy binary to install dir
+      mkdir -p $SNAPCRAFT_PART_INSTALL/electron/
+      cp -R ./dist/Lax-linux-$ARCH/* $SNAPCRAFT_PART_INSTALL/electron/
+  cleanup:
+    after: [ lax ]
+    plugin: nil
+    build-snaps: [ gnome-3-28-1804 ]
+    override-prime: |
+      set -eux
+      cd /snap/gnome-3-28-1804/current
+      find . -type f,l -exec rm -f $SNAPCRAFT_PRIME/{} \;
+      for CRUFT in bug lintian man; do
+        rm -rf $SNAPCRAFT_PRIME/usr/share/$CRUFT
+      done
+      find $SNAPCRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
+      find $SNAPCRAFT_PRIME/usr/share -type d -empty -delete
