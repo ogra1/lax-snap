@@ -54,13 +54,14 @@ parts:
 
       # OSX tool that we do not need or use
       sed -i 's/ditto/#ditto/' bin/build
+      sed -i 's/electron-packager/ELECTRON_GET_USE_PROXY=1 electron-packager/' bin/build
       # app.dock does not exist on linux, dock icon is managed by .desktop file
       sed -i 's/app.dock.setIcon/\/\/app.dock.setIcon/' index.js
       # copy upstream icon to snaps .desktop file
       cp src/static/dock-icon.png $SNAPCRAFT_PROJECT_DIR/snap/gui/icon.png
 
       # install build tools
-      npm install --save-dev @babel/core @babel/cli electron-packager@~15.0.0
+      npm install --save-dev @babel/core @babel/cli
       mkdir -p build/bin
       cp bin/build build/bin/
       # build
