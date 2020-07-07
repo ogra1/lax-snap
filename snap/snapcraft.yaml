@@ -3,10 +3,7 @@ base: core18
 adopt-info: lax
 summary: electron based IRC client
 description: |
-  This is my-snap's description. You have a paragraph or two to tell the
-  most important story about your snap. Keep it under 100 words though,
-  we live in tweetspace and your description wants to look good in the snap
-  store.
+  IRC client built with Electron & React
 
 grade: stable
 confinement: strict
