@@ -39,6 +39,7 @@ parts:
     build-packages:
       - unzip
     stage-packages:
+      - fonts-noto-color-emoji
       - libnspr4
       - libnss3
       - libxss1
