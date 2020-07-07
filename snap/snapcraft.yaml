@@ -41,6 +41,9 @@ parts:
       - libnspr4
       - libnss3
       - libxss1
+    build-packages:
+    - nodejs
+    - npm
     override-build: |
       case $SNAPCRAFT_ARCH_TRIPLET in
         "i386-linux-gnu") ARCH="ia32";;
