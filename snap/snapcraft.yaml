@@ -10,7 +10,6 @@ confinement: strict
 
 architectures:
   - build-on: amd64
-  - build-on: i386
   - build-on: armhf
   - build-on: arm64
 
@@ -44,7 +43,6 @@ parts:
       - libnss3
       - libxss1
     override-build: |
-      env
       case $SNAPCRAFT_ARCH_TRIPLET in
         "i386-linux-gnu") ARCH="ia32";;
         "x86_64-linux-gnu") ARCH="x64";;
@@ -64,7 +62,6 @@ parts:
 
       # OSX tool that we do not need or use
       sed -i 's/ditto/#ditto/' bin/build
-      #sed -i 's/electron-packager/ELECTRON_GET_USE_PROXY=1 GLOBAL_AGENT_HTTP_PROXY=http:\/\/10.10.10.1:8222\/ GLOBAL_AGENT_HTTPS_PROXY=http:\/\/10.10.10.1:8222\/ electron-packager/' bin/build
 
       # app.dock does not exist on linux, dock icon is managed by .desktop file
       sed -i 's/app.dock.setIcon/\/\/app.dock.setIcon/' index.js
@@ -75,6 +72,7 @@ parts:
       npm install --save-dev @babel/core @babel/cli
       mkdir -p build/bin
       cp bin/build build/bin/
+
       # build
       npm run build
 
