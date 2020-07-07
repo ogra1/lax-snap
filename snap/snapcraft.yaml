@@ -60,7 +60,7 @@ parts:
       cp src/static/dock-icon.png $SNAPCRAFT_PROJECT_DIR/snap/gui/icon.png
 
       # install build tools
-      npm install --save-dev @babel/core @babel/cli electron-packager
+      npm install --save-dev @babel/core @babel/cli electron-packager@~15.0.0
       mkdir -p build/bin
       cp bin/build build/bin/
       # build
