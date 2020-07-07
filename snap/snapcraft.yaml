@@ -41,6 +41,8 @@ parts:
       - libnspr4
       - libnss3
       - libxss1
+    build-environment:
+      - ELECTRON_GET_USE_PROXY: 1
     override-build: |
       case $SNAPCRAFT_ARCH_TRIPLET in
         "i386-linux-gnu") ARCH="ia32";;
