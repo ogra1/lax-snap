@@ -44,6 +44,7 @@ parts:
       - libnss3
       - libxss1
     override-build: |
+      env
       case $SNAPCRAFT_ARCH_TRIPLET in
         "i386-linux-gnu") ARCH="ia32";;
         "x86_64-linux-gnu") ARCH="x64";;
