@@ -1,4 +1,4 @@
-name: lax
+name: lax-ogra
 base: core18
 adopt-info: lax
 summary: electron based IRC client
@@ -15,7 +15,7 @@ architectures:
   - build-on: arm64
 
 apps:
-  lax:
+  lax-ogra:
     extensions: [gnome-3-34]
     command: desktop-launch $SNAP/electron/Lax --disable-gpu --no-sandbox
     plugs:

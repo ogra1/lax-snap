@@ -2,7 +2,7 @@
 Type=Application
 Name=Lax
 Icon=${SNAP}/meta/gui/icon.png
-Exec=lax
+Exec=lax-ogra
 Terminal=false
 StartupWMClass=lax
 Categories=Utility;
