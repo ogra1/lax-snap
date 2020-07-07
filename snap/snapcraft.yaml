@@ -41,8 +41,6 @@ parts:
       - libnspr4
       - libnss3
       - libxss1
-    build-environment:
-      - ELECTRON_GET_USE_PROXY: "1"
     override-build: |
       case $SNAPCRAFT_ARCH_TRIPLET in
         "i386-linux-gnu") ARCH="ia32";;
@@ -62,7 +60,7 @@ parts:
       cp src/static/dock-icon.png $SNAPCRAFT_PROJECT_DIR/snap/gui/icon.png
 
       # install build tools
-      npm install --save-dev @babel/core @babel/cli
+      npm install --save-dev @babel/core @babel/cli electron-packager
       mkdir -p build/bin
       cp bin/build build/bin/
       # build
