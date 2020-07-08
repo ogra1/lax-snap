@@ -16,7 +16,7 @@ architectures:
 apps:
   lax-ogra:
     extensions: [gnome-3-34]
-    command: desktop-launch $SNAP/electron/Lax --disable-gpu --no-sandbox
+    command: desktop-launch $SNAP/electron/Lax --no-sandbox
     plugs:
       - audio-playback
       - browser-support
@@ -39,7 +39,6 @@ parts:
     build-packages:
       - unzip
     stage-packages:
-      - fonts-noto-color-emoji
       - libnspr4
       - libnss3
       - libxss1
