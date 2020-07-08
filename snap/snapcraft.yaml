@@ -29,6 +29,12 @@ apps:
       - wayland
       - x11
 
+hooks:
+  configure:
+    plugs:
+      - desktop
+      - x11
+
 parts:
   lax:
     source: https://github.com/brandly/Lax.git
