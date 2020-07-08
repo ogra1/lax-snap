@@ -39,7 +39,6 @@ parts:
     build-packages:
       - unzip
     stage-packages:
-      - fontconfig
       - libnspr4
       - libnss3
       - libxss1

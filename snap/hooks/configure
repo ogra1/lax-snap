@@ -12,4 +12,10 @@ echo "</fontconfig>" >> ${SNAP_DATA}/fontconfig/fonts.conf
 
 export FONTCONFIG_FILE=${SNAP_DATA}/fontconfig/fonts.conf
 
-exec ${SNAP}/snap/command-chain/snapcraft-runner ${SNAP}/usr/bin/fc-cache --force --system-only --verbose
+FC_CACHE_BIN="${SNAP}/usr/bin/fc-cache"
+
+if [ ! -z $SNAP_DESKTOP_RUNTIME ]; then
+  FC_CACHE_BIN="${SNAP_DESKTOP_RUNTIME}/usr/bin/fc-cache"
+fi
+
+exec ${SNAP}/snap/command-chain/snapcraft-runner ${FC_CACHE_BIN} --force --system-only --verbose
