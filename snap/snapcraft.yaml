@@ -16,7 +16,7 @@ architectures:
 apps:
   lax-ogra:
     extensions: [gnome-3-34]
-    command: desktop-launch $SNAP/electron/Lax --no-sandbox
+    command: desktop-launch $SNAP/private-fontcache $SNAP/electron/Lax --no-sandbox
     plugs:
       - audio-playback
       - browser-support
@@ -60,7 +60,7 @@ parts:
         export GLOBAL_AGENT_HTTPS_PROXY="${http_proxy}"
       fi
 
-      # OSX tool that we do not need or use
+      # skip use of ditto to create zip (also, the command hardcodes darwin)
       sed -i 's/ditto/#ditto/' bin/build
 
       # app.dock does not exist on linux, dock icon is managed by .desktop file
@@ -83,8 +83,12 @@ parts:
       # copy binary to install dir
       mkdir -p $SNAPCRAFT_PART_INSTALL/electron/
       cp -R ./dist/Lax-linux-$ARCH/* $SNAPCRAFT_PART_INSTALL/electron/
-  cleanup:
+  snap-helpers:
+    plugin: dump
     after: [ lax ]
+    source: snap/local/scripts
+  cleanup:
+    after: [ snap-helpers ]
     plugin: nil
     build-snaps: [ gnome-3-28-1804 ]
     override-prime: |
