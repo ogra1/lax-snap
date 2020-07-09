@@ -16,7 +16,7 @@ architectures:
 apps:
   lax-ogra:
     extensions: [gnome-3-34]
-    command: desktop-launch $SNAP/private-fontcache $SNAP/Lax --no-sandbox
+    command: desktop-launch $SNAP/Lax --no-sandbox
     plugs:
       - audio-playback
       - browser-support
@@ -27,12 +27,6 @@ apps:
       - opengl
       - unity7
       - wayland
-      - x11
-
-hooks:
-  configure:
-    plugs:
-      - desktop
       - x11
 
 parts:
@@ -83,12 +77,8 @@ parts:
 
       # install to snap target
       cp -av ./dist/Lax-linux-$ARCH/* $SNAPCRAFT_PART_INSTALL/
-  snap-helpers:
-    plugin: dump
-    after: [ lax ]
-    source: snap/local/scripts
   cleanup:
-    after: [ snap-helpers ]
+    after: [ lax ]
     plugin: nil
     build-snaps: [ gnome-3-28-1804 ]
     override-prime: |
