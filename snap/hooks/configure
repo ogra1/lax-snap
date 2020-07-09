@@ -5,6 +5,7 @@ mkdir -p $SNAP_DATA/fontconfig
 echo "<fontconfig>" > ${SNAP_DATA}/fontconfig/fonts.conf
 echo "<cachedir>${SNAP_DATA}/fontconfig</cachedir>" >> ${SNAP_DATA}/fontconfig/fonts.conf
 echo "<include ignore_missing=\"yes\">/etc/fonts/fonts.conf</include>" >> ${SNAP_DATA}/fontconfig/fonts.conf
+echo "<include ignore_missing=\"yes\">${SNAP}/etc/fonts/fonts.conf</include>" >> ${SNAP_DATA}/fontconfig/fonts.conf
 if [ ! -z $SNAP_DESKTOP_RUNTIME ]; then
 echo "<include ignore_missing=\"yes\">${SNAP_DESKTOP_RUNTIME}/etc/fonts/fonts.conf</include>" >> ${SNAP_DATA}/fontconfig/fonts.conf
 fi

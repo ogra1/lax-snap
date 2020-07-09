@@ -16,7 +16,7 @@ architectures:
 apps:
   lax-ogra:
     extensions: [gnome-3-34]
-    command: desktop-launch $SNAP/private-fontcache $SNAP/electron/Lax --no-sandbox
+    command: desktop-launch $SNAP/private-fontcache $SNAP/Lax --no-sandbox
     plugs:
       - audio-playback
       - browser-support
@@ -60,35 +60,29 @@ parts:
       npm config set unsafe-perm True
 
       # workaround for build.snapcraft.io builds
+      # https://bugs.launchpad.net/bugs/1886861
       if [ -n "$http_proxy" ]; then
         export ELECTRON_GET_USE_PROXY=1
         export GLOBAL_AGENT_HTTP_PROXY="${http_proxy}"
         export GLOBAL_AGENT_HTTPS_PROXY="${http_proxy}"
       fi
 
-      # skip use of ditto to create zip (also, the command hardcodes darwin)
+      # skip use of OSX ditto to create zip (also, the command hardcodes darwin)
       sed -i 's/ditto/#ditto/' bin/build
 
       # app.dock does not exist on linux, dock icon is managed by .desktop file
       sed -i 's/app.dock.setIcon/\/\/app.dock.setIcon/' index.js
-      # copy upstream icon to snaps .desktop file
-      cp src/static/dock-icon.png $SNAPCRAFT_PROJECT_DIR/snap/gui/icon.png
 
-      # install build tools
+      # install build tools and build app
       npm install --save-dev @babel/core @babel/cli
-      mkdir -p build/bin
-      cp bin/build build/bin/
-
-      # build
       npm run build
 
       # set version
       VER="$(grep version package.json |sed 's/^.*: //;s/"//g;s/,//')"
       snapcraftctl set-version $VER
 
-      # copy binary to install dir
-      mkdir -p $SNAPCRAFT_PART_INSTALL/electron/
-      cp -R ./dist/Lax-linux-$ARCH/* $SNAPCRAFT_PART_INSTALL/electron/
+      # install to snap target
+      cp -av ./dist/Lax-linux-$ARCH/* $SNAPCRAFT_PART_INSTALL/
   snap-helpers:
     plugin: dump
     after: [ lax ]

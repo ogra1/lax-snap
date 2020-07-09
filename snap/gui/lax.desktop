@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Lax
-Icon=${SNAP}/meta/gui/icon.png
+Icon=${SNAP}/resources/app/src/static/dock-icon.png
 Exec=lax-ogra
 Terminal=false
 StartupWMClass=lax
